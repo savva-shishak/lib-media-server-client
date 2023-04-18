@@ -76,3 +76,23 @@ export function sendMessage(
 export function closeCall();
 ```
 
+А для воспроизведения используются 2 компонента
+```tsx
+import { AudioProduce } from "mediastore/components/Audio";
+import { VideoProduce } from "mediastore/components/Video";
+
+const c1 = (
+  <VideoProduce
+    peerId={string | null} // Идентификатор другого участника, если не указан, то используется трек текущего пользователя
+    mediatag={string} // Медиа тег (идентификатор) трека
+    onVideo={ReactNode | null} // Что показывать в случае отсутствия трека
+  />
+);
+
+const c1 = (
+  <AudioProduce
+    peerId={string | null} // Идентификатор другого участника, если не указан, то используется трек текущего пользователя
+    mediatag={string} // Медиа тег (идентификатор) трека
+  />
+);
+```
