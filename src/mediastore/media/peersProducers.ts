@@ -4,6 +4,17 @@ import { Socket } from "socket.io-client";
 import { ProducerInfo } from "../types";
 import { AppStore } from "..";
 import { createConsumer } from "./createConsumer";
+import { Consumer } from "mediasoup-client/lib/types";
+
+export function closeConsumer(consumer: Consumer) {
+  AppStore.update((state) => {
+    if (consumer) {
+      consumer.close();
+      state.pausedProducers = state.pausedProducers.filter((i) => i !== consumer.producerId);
+      state.consumers = state.consumers.filter((item) => consumer.producerId !== item.producerId);
+    }
+  });
+}
 
 export function subscribePeersProducers(
   transport: Transport,
@@ -35,15 +46,11 @@ export function subscribePeersProducers(
   });
 
   socket.on('close producer', ({ id }) => {
-    AppStore.update((state) => {
-      const consumer = state.consumers.find((consumer) => consumer.producerId === id);
+    const consumer = AppStore.getRawState().consumers.find((consumer) => consumer.producerId === id);
 
-      if (consumer) {
-        consumer.close();
-        state.pausedProducers = state.pausedProducers.filter((i) => i !== id);
-        state.consumers = state.consumers.filter((consumer) => consumer.producerId !== id);
-      }
-    });
+    if (consumer) {
+      closeConsumer(consumer); 
+    }
   });
 
   return Promise
