@@ -64,7 +64,7 @@ export function closeTrack(mediaTag: string);
 
 // mediastore/index.ts
 
-// Откправить сообщение
+// Отправить сообщение
 export function sendMessage(
   msg: {
     type: string, // Тип сообщения
