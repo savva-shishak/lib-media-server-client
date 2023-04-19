@@ -42,7 +42,7 @@ export function resumeTrack(mediaTag: string) {
     producer.resume();
     socket.emit('resume producer', { producerId: producer.id });
     AppStore.update((state) => {
-      state.pausedProducers = state.pausedConsumers.filter((i) => i !== producer.id);
+      state.pausedProducers = state.pausedProducers.filter((i) => i !== producer.id);
     });
   }
 }
@@ -66,7 +66,7 @@ export function closeTrack(mediaTag: string) {
     socket.emit('close producer', { producerId: producer.id });
     AppStore.update((state) => {
       state.producers = state.producers.filter((p) => p.id !== producer.id);
-      state.pausedProducers = state.pausedConsumers.filter((i) => i !== producer.id);
+      state.pausedProducers = state.pausedProducers.filter((i) => i !== producer.id);
     });
     return producer.close();
   }
